@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Inicial Ponto</title>
+  <style>
+    /* Estilos gerais */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Barra superior */
+    .barra-superior {
+      width: 100%;
+      height: 60px;
+      background-color: #003366;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: white;
+    }
+
+    .barra-superior .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .barra-superior .pesquisa {
+      display: flex;
+      align-items: center;
+    }
+
+    .barra-superior .pesquisa input[type="text"] {
+      padding: 5px;
+      border-radius: 5px;
+      border: none;
+      margin-right: 10px;
+    }
+
+    .barra-superior button {
+      margin-left: 10px;
+      padding: 8px 12px;
+      border: none;
+      background-color: #0055cc;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .barra-superior button:hover {
+      transform: scale(1.05);
+      background-color: #007bff;
+    }
+
+    .barra-superior .menu {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Container principal */
+    .container {
+      display: flex;
+      flex: 1;
+    }
+
+    /* Coluna lateral */
+    .coluna-lateral {
+      width: 200px;
+      background-color: #cce6ff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    .coluna-lateral button {
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #0055cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .coluna-lateral button:hover {
+      transform: scale(1.05);
+      background-color: #007bff;
+    }
+
+    .coluna-lateral .bottom-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Conteúdo principal */
+    .conteudo {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    /* Rodapé */
+    .footer {
+      width: 100%;
+      background-color: #003366;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    }
+
+    .footer-data {
+      font-size: 14px;
+      flex: 1;
+      text-align: center;
+    }
+
+    .clock {
+      font-size: 16px;
+    }
+
+    /* Tabela de Registros */
+    table {
+      width: 50%; /* Diminuir a largura da tabela */
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+    }
+
+    th, td {
+      padding: 5px; /* Reduzir o padding para tornar a tabela mais compacta */
+      text-align: center;
+    }
+
+    /* Diminuir a largura de cada célula */
+    th {
+      font-size: 14px;
+    }
+
+    td {
+      font-size: 12px;
+    }
+
+    /* Estilo para o pop-up */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      border-radius: 5px;
+    }
+
+    .popup h3 {
+      margin-bottom: 10px;
+    }
+
+    .popup button {
+      padding: 5px 10px;
+      background-color: #0055cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    /* Estilo para o pop-up de calendário */
+    .calendar-popup, .calculator-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      border-radius: 5px;
+    }
+
+    .calendar-popup iframe {
+      width: 100%;
+      border: none;
+      height: 400px;
+    }
+
+    /* Estilo para o pop-up da calculadora */
+    .calculator-popup {
+      width: 300px;
+      padding: 10px;
+    }
+
+    .calculator-popup .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .calculator-popup .header h3 {
+      margin: 0;
+    }
+
+    .calculator-popup .close {
+      cursor: pointer;
+      background-color: #ff0000;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .calculator-popup .calculator {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .calculator-popup button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #0055cc;
+      color: white;
+      font-size: 18px;
+    }
+
+    .calculator-popup button:hover {
+      background-color: #007bff;
+    }
+
+    .calculator-popup input {
+      grid-column: span 4;
+      padding: 10px;
+      font-size: 18px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .coluna-lateral button,
+.btn-pausas {
+  width: 100%; /* Garantir que os botões ocupem toda a largura */
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #0055cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.coluna-lateral button:hover,
+.btn-pausas:hover {
+  transform: scale(1.05);
+  background-color: #007bff;
+}
+
+.dropdown {
+  position: relative;
+  width: 100%; /* Garantir que o dropdown ocupe a largura total da coluna */
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #cce6ff;
+  min-width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  padding: 10px;
+  background-color: #0055cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%; /* Garantir que o botão dentro do dropdown ocupe toda a largura */
+}
+
+.dropdown-content button:hover {
+  transform: scale(1.05);
+  background-color: #007bff;
+}
+
+/* Mostrar o dropdown ao passar o mouse sobre o botão */
+.dropdown:hover .dropdown-content {
+  display: block;
+  position: relative;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superior -->
+  <div class="barra-superior">
+    <div class="logo">SOLUÇÃO KAIRÓS</div>
+
+    <div class="pesquisa">
+      <input type="text" placeholder="Pesquisar...">
+      <button id="calcButton">Calculadora</button>
+      <button id="calendarButton">Calendário</button>
+    </div>
+
+    <div class="menu">
+      <button>Menu 1</button>
+      <button>Menu 2</button>
+      <button>Menu 3</button>
+      <button>Perfil1</button>
+      <button>Sair</button>
+    </div>
+  </div>
+
+  <!-- Container Principal -->
+  <div class="container">
+    
+    <!-- Coluna Lateral -->
+    <div class="coluna-lateral">
+      <button id="registrarEntrada">Registrar Entrada</button>
+      <button id="registrarSaida">Registrar Saída</button>
+      <button>Acessar Folha de Ponto</button>
+
+      <div class="dropdown">
+        <button class="btn-pausas">Pausas</button>
+        <div class="dropdown-content">
+          <button>descanso</button>
+          <button>almoco</button>
+          <button>particular</button>
+          <button>ambulatorio</button>
+          <button>reunião</button>
+          <button>feedback</button>
+          <button>Treinamento</button>
+          <button>RH</button>
+        </div>
+      </div>
+      
+      
+      <div class="bottom-section">
+        <button>Help</button>
+        <button>Perfil</button>
+      </div>
+      
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="conteudo">
+      <h1>Bem-vindo à página principal</h1>
+      <p>Folha de Ponto.</p>
+
+      <!-- Tabela para exibir registros de ponto -->
+      <table id="registroTabela">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Pausa</th> <!-- Nova coluna: nome da pausa -->
+            <th>Início da Pausa</th> <!-- Nova coluna: início da pausa -->
+            <th>Fim da Pausa</th> <!-- Nova coluna: fim da pausa -->
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      
+
+  <!-- Pop-up de mensagem -->
+  <div id="popup" class="popup">
+    <h3 id="popupMessage"></h3>
+    <button id="popupCloseButton">OK</button>
+  </div>
+
+  <!-- Pop-up de calendário -->
+  <div id="calendarPopup" class="calendar-popup">
+    <button id="calendarCloseButton" style="float: right;">X</button>
+    <h3>Calendário</h3>
+    <iframe src="https://calendar.google.com/calendar/embed?src=en.usa%23holiday%40group.v.calendar.google.com&ctz=America%2FSao_Paulo" frameborder="0" scrolling="no"></iframe>
+  </div>
+
+  <!-- Pop-up da calculadora -->
+  <div id="calculatorPopup" class="calculator-popup">
+    <div class="header">
+      <h3>Calculadora</h3>
+      <button class="close" id="calculatorCloseButton">X</button>
+    </div>
+    <input type="text" id="calculatorDisplay" readonly>
+    <div class="calculator">
+      <button data-value="7">7</button>
+      <button data-value="8">8</button>
+      <button data-value="9">9</button>
+      <button data-value="/">/</button>
+      <button data-value="4">4</button>
+      <button data-value="5">5</button>
+      <button data-value="6">6</button>
+      <button data-value="*">*</button>
+      <button data-value="1">1</button>
+      <button data-value="2">2</button>
+      <button data-value="3">3</button>
+      <button data-value="-">-</button>
+      <button data-value="0">0</button>
+      <button data-value=".">.</button>
+      <button data-value="=">=</button>
+      <button data-value="+">+</button>
+      <button data-value="C">C</button>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <div class="footer">
+    <div class="clock" id="clock"></div>
+    <div class="footer-data">Grupo Império ElSam ® ElSamTec-2024</div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabela = document.getElementById('registroTabela').getElementsByTagName('tbody')[0];
+      const btnEntrada = document.getElementById('registrarEntrada');
+      const btnSaida = document.getElementById('registrarSaida');
+      const btnCalendario = document.getElementById('calendarButton');
+      const btnCalculadora = document.getElementById('calcButton');
+      const clock = document.getElementById('clock');
+      const popup = document.getElementById('popup');
+      const popupMessage = document.getElementById('popupMessage');
+      const popupCloseButton = document.getElementById('popupCloseButton');
+      const calendarPopup = document.getElementById('calendarPopup');
+      const calendarCloseButton = document.getElementById('calendarCloseButton');
+      const calculatorPopup = document.getElementById('calculatorPopup');
+      const calculatorCloseButton = document.getElementById('calculatorCloseButton');
+      const calculatorDisplay = document.getElementById('calculatorDisplay');
+      
+      let registros = {}; // Objeto para armazenar registros por data
+
+      // Função para registrar a entrada ou saída
+      function registrar(tipo) {
+        const agora = new Date();
+        const data = agora.toLocaleDateString('pt-BR');
+        const hora = agora.toLocaleTimeString('pt-BR');
+
+        // Verificar se já existe um registro de entrada ou saída para o dia
+        if (!registros[data]) {
+          registros[data] = { entrada: false, saida: false };
+        }
+
+        if (tipo === 'Entrada' && !registros[data].entrada) {
+          // Registrar entrada
+          const novaLinha = tabela.insertRow();
+          const tipoCelula = novaLinha.insertCell(0);
+          const dataCelula = novaLinha.insertCell(1);
+          const horaCelula = novaLinha.insertCell(2);
+
+          tipoCelula.textContent = tipo;
+          dataCelula.textContent = data;
+          horaCelula.textContent = hora;
+
+          registros[data].entrada = true; // Marca que já houve uma entrada nesse dia
+          mostrarPopup('Entrada registrada com sucesso!');
+        } else if (tipo === 'Entrada' && registros[data].entrada) {
+          mostrarPopup('Entrada já registrada para hoje.');
+        }
+
+        if (tipo === 'Saída' && !registros[data].saida) {
+          // Registrar saída
+          const novaLinha = tabela.insertRow();
+          const tipoCelula = novaLinha.insertCell(0);
+          const dataCelula = novaLinha.insertCell(1);
+          const horaCelula = novaLinha.insertCell(2);
+
+          tipoCelula.textContent = tipo;
+          dataCelula.textContent = data;
+          horaCelula.textContent = hora;
+
+          registros[data].saida = true; // Marca que já houve uma saída nesse dia
+          mostrarPopup('Saída registrada com sucesso! Bom descanso!');
+        } else if (tipo === 'Saída' && registros[data].saida) {
+          mostrarPopup('Saída já registrada para hoje.');
+        }
+      }
+
+      // Função para mostrar o pop-up
+      function mostrarPopup(mensagem) {
+        popupMessage.textContent = mensagem;
+        popup.style.display = 'block';
+      }
+
+      // Função para fechar o pop-up
+      function closePopup() {
+        popup.style.display = 'none';
+      }
+
+      // Função para mostrar o pop-up do calendário
+      function mostrarCalendario() {
+        calendarPopup.style.display = 'block';
+      }
+
+      // Função para fechar o pop-up do calendário
+      function fecharCalendario() {
+        calendarPopup.style.display = 'none';
+      }
+
+      // Função para mostrar o pop-up da calculadora
+      function mostrarCalculadora() {
+        calculatorPopup.style.display = 'block';
+      }
+
+      // Função para fechar o pop-up da calculadora
+      function fecharCalculadora() {
+        calculatorPopup.style.display = 'none';
+      }
+
+      // Função para calcular a expressão
+      function calcular() {
+        try {
+          calculatorDisplay.value = eval(calculatorDisplay.value);
+        } catch {
+          calculatorDisplay.value = 'Error';
+        }
+      }
+
+      // Evento de clique no botão "OK" do pop-up
+      popupCloseButton.addEventListener('click', closePopup);
+
+      // Evento de clique no botão "Calendário"
+      btnCalendario.addEventListener('click', mostrarCalendario);
+
+      // Evento de clique no botão "X" do pop-up de calendário
+      calendarCloseButton.addEventListener('click', fecharCalendario);
+
+      // Evento de clique no botão "Calculadora"
+      btnCalculadora.addEventListener('click', mostrarCalculadora);
+
+      // Evento de clique no botão "X" do pop-up da calculadora
+      calculatorCloseButton.addEventListener('click', fecharCalculadora);
+
+      // Eventos dos botões da calculadora
+      document.querySelectorAll('.calculator-popup button').forEach(button => {
+        button.addEventListener('click', () => {
+          const value = button.getAttribute('data-value');
+          if (value === '=') {
+            calcular();
+          } else if (value === 'C') {
+            calculatorDisplay.value = '';
+          } else {
+            calculatorDisplay.value += value;
+          }
+        });
+      });
+
+      // Eventos dos botões
+      btnEntrada.addEventListener('click', () => registrar('Entrada'));
+      btnSaida.addEventListener('click', () => registrar('Saída'));
+
+      // Função para atualizar o relógio no rodapé
+      function updateClock() {
+        const agora = new Date();
+        const horas = agora.getHours().toString().padStart(2, '0');
+        const minutos = agora.getMinutes().toString().padStart(2, '0');
+        const segundos = agora.getSeconds().toString().padStart(2, '0');
+        const data = agora.toLocaleDateString('pt-BR');
+        clock.textContent = `${data} ${horas}:${minutos}:${segundos}`;
+      }
+
+      // Atualiza o relógio a cada segundo
+      setInterval(updateClock, 1000);
+      updateClock();
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+  const tabela = document.getElementById('registroTabela').getElementsByTagName('tbody')[0];
+  const btnEntrada = document.getElementById('registrarEntrada');
+  const btnSaida = document.getElementById('registrarSaida');
+  let pausaEmAndamento = null; // Para controlar se uma pausa está em andamento
+
+  // Função para registrar pausas
+  function registrarPausa(nomePausa) {
+    const agora = new Date();
+    const data = agora.toLocaleDateString('pt-BR');
+    const hora = agora.toLocaleTimeString('pt-BR');
+    
+    if (!pausaEmAndamento) {
+      // Início da pausa
+      pausaEmAndamento = {
+        nome: nomePausa,
+        data: data,
+        inicio: hora,
+      };
+      const novaLinha = tabela.insertRow();
+      novaLinha.id = `pausa-${nomePausa}-${data}`; // ID da linha para atualizar o fim da pausa depois
+
+      // Preencher as colunas
+      novaLinha.insertCell(0).textContent = 'Pausa';
+      novaLinha.insertCell(1).textContent = data;
+      novaLinha.insertCell(2).textContent = hora;
+      novaLinha.insertCell(3).textContent = nomePausa; // Nome da pausa
+      novaLinha.insertCell(4).textContent = hora; // Início da pausa
+      novaLinha.insertCell(5).textContent = ''; // Deixar o fim da pausa vazio inicialmente
+    } else {
+      // Fim da pausa
+      const linhaPausa = document.getElementById(`pausa-${pausaEmAndamento.nome}-${pausaEmAndamento.data}`);
+      if (linhaPausa) {
+        linhaPausa.cells[5].textContent = hora; // Preencher o fim da pausa
+        pausaEmAndamento = null; // Resetar a pausa em andamento
+      }
+    }
+  }
+
+  // Adicionar eventos aos botões de pausa
+  document.querySelectorAll('.dropdown-content button').forEach(button => {
+    button.addEventListener('click', () => {
+      const nomePausa = button.textContent;
+      registrarPausa(nomePausa);
+    });
+  });
+});
+
+
+  </script>
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+    </div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

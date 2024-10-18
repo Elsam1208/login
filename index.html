@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilo do modal */
+        .modal {
+            display: none; /* Oculto por padrão */
+            position: fixed; /* Fica no topo da página */
+            z-index: 1000; /* Em cima de outros elementos */
+            left: 0;
+            top: 0;
+            width: 100%; /* Largura total */
+            height: 100%; /* Altura total */
+            overflow: auto; /* Permite rolagem se necessário */
+            background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro */
+        }
+        .modal-content {
+            background-color: #001f3f; /* Azul-marinho */
+            margin: 15% auto; /* 15% do topo e centralizado */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px; /* Largura do modal */
+            border-radius: 8px; /* Bordas arredondadas */
+            color: white; /* Texto branco */
+            text-align: center; /* Centraliza o texto */
+        }
+        .close {
+            color: #fff;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #ddd;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            text-align: left; /* Alinha o texto do rótulo à esquerda */
+            color: #ffffff; /* Texto dos rótulos em branco */
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: calc(100% - 22px); /* Ajusta a largura para não ultrapassar a caixa */
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc; /* Borda cinza clara */
+            border-radius: 5px; /* Bordas arredondadas */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Sombra interna */
+            text-align: center; /* Centraliza o texto nos campos de entrada */
+            box-sizing: border-box; /* Inclui padding e borda na largura */
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus {
+            border-color: #007bff; /* Borda azul ao focar */
+            outline: none; /* Remove o contorno padrão */
+        }
+        button {
+            background-color: #007bff; /* Azul claro */
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%; /* Botão ocupa toda a largura */
+        }
+        button:hover {
+            background-color: #0056b3; /* Azul escuro ao passar o mouse */
+        }
+        .error-message {
+            color: red; /* Mensagem de erro em vermelho */
+            text-align: center; /* Centraliza a mensagem */
+            margin-top: 10px; /* Margem superior */
+        }
+    </style>
+</head>
+<body>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+    <div class="login-container">
+        <!-- Logo -->
+        <img src="Imagens/logo1.png" alt="Logo" class="logo">
+        
+        <h2>Login - Ponto</h2>
+        
+        <form id="loginForm">
+            <label for="username">Usuário</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" required>
+
+            <div class="stay-connected">
+                <input type="checkbox" id="stayConnected" name="stayConnected">
+                <label for="stayConnected">Manter conectado</label>
+            </div>
+
+            <button type="submit" class="login-btn">Entrar</button>
+            <div id="error" class="error-message" style="display: none;"></div> <!-- Mensagem de erro -->
+        </form>
+
+        <div class="forgot-password">
+            <a href="#" id="forgotPassword">Esqueci minha senha</a>
+        </div>
+
+        <!-- Opção Inscreva-se -->
+        <div class="signup-option">
+            <p>Não tem uma conta? <a href="cadastro.html">Inscreva-se</a></p>
+        </div>
+
+        <!-- Badge de Segurança -->
+        <div class="security-badge">Segurança Garantida</div>
+        
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h3>Recuperar Senha</h3>
+            <label for="matricula">Matrícula:</label>
+            <input type="text" id="matricula" required>
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" required>
+            <button id="submitRecovery">OK</button>
+        </div>
+    </div>
+
+    <!-- Modal de Boas-Vindas -->
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeWelcomeModal">&times;</span>
+            <h3>Bem-vindo!</h3>
+            <p>Você foi logado com sucesso.</p>
+        </div>
+    </div>
+
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeErrorModal">&times;</span>
+            <h3>Erro!</h3>
+            <p>Usuário ou senha inválidos.</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; Grupo Império ElSam ® ElSamTec-2024</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Modal
+        const modal = document.getElementById("myModal");
+        const btn = document.getElementById("forgotPassword");
+        const span = document.getElementById("closeModal");
+        const submitRecovery = document.getElementById("submitRecovery");
+
+        // Modal de Boas-Vindas
+        const welcomeModal = document.getElementById("welcomeModal");
+        const closeWelcomeModal = document.getElementById("closeWelcomeModal");
+
+        // Modal de Erro
+        const errorModal = document.getElementById("errorModal");
+        const closeErrorModal = document.getElementById("closeErrorModal");
+
+        // Quando o usuário clica no link "Esqueci minha senha"
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // Quando o usuário clica no botão de fechar (x)
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Quando o usuário clica fora do modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Quando o usuário clica no botão OK do modal de recuperação de senha
+        submitRecovery.onclick = function() {
+            const matricula = document.getElementById("matricula").value;
+            const email = document.getElementById("email").value;
+
+            // Aqui você pode implementar a lógica de envio de e-mail
+
+            // Mensagem de sucesso
+            alert("Senha enviada ao seu e-mail.");
+            modal.style.display = "none"; // Fecha o modal
+        }
+
+        // Redirecionar ao clicar em "Entrar"
+        const loginForm = document.getElementById("loginForm");
+        const errorDiv = document.getElementById("error");
+        const validUser = "Admin"; // Usuário válido
+        const validPassword = "admin"; // Senha válida
+
+        loginForm.onsubmit = function(event) {
+            event.preventDefault(); // Evita o envio do formulário
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Valida usuário e senha
+            if (username === validUser && password === validPassword) {
+                welcomeModal.style.display = "block"; // Mostra modal de boas-vindas
+                setTimeout(() => {
+                    window.location.href = "pg1.html"; // Redireciona para pg1.html após 2 segundos
+                }, 2000);
+            } else {
+                errorModal.style.display = "block"; // Mostra modal de erro
+                errorDiv.innerText = "Usuário ou senha inválidos."; // Mensagem de erro
+                errorDiv.style.display = "block"; // Exibe a mensagem
+            }
+        }
+
+        // Fecha o modal de boas-vindas
+        closeWelcomeModal.onclick = function() {
+            welcomeModal.style.display = "none";
+        }
+
+        // Fecha o modal de erro
+        closeErrorModal.onclick = function() {
+            errorModal.style.display = "none";
+        }
+
+        // Fecha modais ao clicar fora
+        window.onclick = function(event) {
+            if (event.target == welcomeModal) {
+                welcomeModal.style.display = "none";
+            }
+            if (event.target == errorModal) {
+                errorModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
